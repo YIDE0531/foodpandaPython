@@ -1,6 +1,6 @@
 import requests
 import bs4
-import base64
+#import base64
 
 class Shop():
     def __init__(self, image, name):
@@ -116,8 +116,7 @@ app=Flask(__name__)
 @app.route("/")
 def home():
     #return "base64.b64encode(responseMsg.encode('utf-8')).decode('utf-8')"
-    return base64.b64encode(responseMsg.encode('utf-8')).decode('utf-8')
-
+    return responseMsg
 @app.route("/test")
 def test():
     return "Hellow False8888888888"
