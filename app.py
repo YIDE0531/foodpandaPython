@@ -120,8 +120,8 @@ def home():
     return responseMsg
 @app.route("/getinfo")
 def test():
-    responseinfo = webCrawlerInfo("https://www.foodpanda.com.tw/restaurant/f7sc/k-d-bistro-taipei#")
-    return responseinfo
+    #responseinfo = webCrawlerInfo("https://www.foodpanda.com.tw/restaurant/f7sc/k-d-bistro-taipei#")
+    return "responseinfo"
 
 if __name__=="__main__":
     app.run()
