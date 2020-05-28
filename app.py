@@ -1,6 +1,5 @@
 import requests
 import bs4
-import json
 import base64
 
 class Shop():
@@ -80,7 +79,7 @@ def webCrawlerInfo(url):
     num = 0
     for i,row in enumerate(soup.find_all("div", class_="dish-category-section")):  #主項目
         for j,datas in enumerate(row.find_all("li")):    #細項名稱
-            data2 = json.loads(datas["data-object"])
+            data2 = datas["data-object"]
             itemName += data2["name"] + ","
             #print(data2["name"])
             image = datas.find("div", class_="photo")
