@@ -3,24 +3,6 @@ import bs4
 import json
 import base64
 
-responseMsg = webCrawlerRead()
-
-#print (base64.b64encode(responseMsg.encode('utf-8')).decode('utf-8'))
-from flask import Flask
-app=Flask(__name__)
-
-@app.route("/")
-def home():
-    #return "base64.b64encode(responseMsg.encode('utf-8')).decode('utf-8')"
-    return base64.b64encode(responseMsg.encode('utf-8')).decode('utf-8')
-
-@app.route("/test")
-def test():
-    return "Hellow False8888888888"
-
-if __name__=="__main__":
-    app.run()
-
 class Shop():
     def __init__(self, image, name):
         self.image = image
@@ -124,3 +106,22 @@ def webCrawlerInfo(url):
 
     responseMsg = '{ "title": "' + title + '","titleNum": "' + titleNum + '","itemName": "' + itemName + '","itemImage": "' + itemImage+ '","itemPrice": "' + itemPrice + '"}'
     return responseMsg
+
+
+responseMsg = webCrawlerRead()
+
+#print (base64.b64encode(responseMsg.encode('utf-8')).decode('utf-8'))
+from flask import Flask
+app=Flask(__name__)
+
+@app.route("/")
+def home():
+    #return "base64.b64encode(responseMsg.encode('utf-8')).decode('utf-8')"
+    return base64.b64encode(responseMsg.encode('utf-8')).decode('utf-8')
+
+@app.route("/test")
+def test():
+    return "Hellow False8888888888"
+
+if __name__=="__main__":
+    app.run()
