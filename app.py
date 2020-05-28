@@ -107,7 +107,7 @@ def webCrawlerInfo(url):
     return responseMsg
 
 
-responseMsg = webCrawlerRead()
+
 
 #print (base64.b64encode(responseMsg.encode('utf-8')).decode('utf-8'))
 from flask import Flask
@@ -116,10 +116,12 @@ app=Flask(__name__)
 @app.route("/")
 def home():
     #return "base64.b64encode(responseMsg.encode('utf-8')).decode('utf-8')"
+    responseMsg = webCrawlerRead()
     return responseMsg
-@app.route("/test")
+@app.route("/getinfo")
 def test():
-    return "Hellow False8888888888"
+    responseinfo = webCrawlerInfo("https://www.foodpanda.com.tw/restaurant/f7sc/k-d-bistro-taipei#")
+    return responseinfo
 
 if __name__=="__main__":
     app.run()
