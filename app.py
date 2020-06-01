@@ -116,12 +116,12 @@ def webCrawlerInfo(url):
 from flask import Flask
 app=Flask(__name__)
 
-@app.route("/")
+@app.route("/getData")
 def home():
     #return "base64.b64encode(responseMsg.encode('utf-8')).decode('utf-8')"
     responseMsg = webCrawlerRead()
     return responseMsg
-@app.route("/getinfo", methods=['POST'])
+@app.route("/getInfo", methods=['POST'])
 def test():
     url = request.form.get("infoUrl")
     #url = "https://www.foodpanda.com.tw/restaurant/f7sc/k-d-bistro-taipei#"
