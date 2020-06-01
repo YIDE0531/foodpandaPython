@@ -1,5 +1,7 @@
 import requests
 import bs4
+from flask import Flask, request
+
 #import base64
 
 class Shop():
@@ -118,10 +120,11 @@ def home():
     #return "base64.b64encode(responseMsg.encode('utf-8')).decode('utf-8')"
     responseMsg = webCrawlerRead()
     return responseMsg
-@app.route("/getinfo")
+@app.route("/getinfo", methods = ["POST"])
 def test():
-    #responseinfo = webCrawlerInfo("https://www.foodpanda.com.tw/restaurant/f7sc/k-d-bistro-taipei#")
-    return "responseinfo"
+    url = request.form.get("infoUrl")
+    responseinfo = webCrawlerInfo(url)
+    return responseinfo
 
 if __name__=="__main__":
     app.run()
