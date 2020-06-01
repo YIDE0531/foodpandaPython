@@ -1,6 +1,7 @@
 import requests
 import bs4
 from flask import Flask, request
+import json
 
 #import base64
 
@@ -81,7 +82,7 @@ def webCrawlerInfo(url):
     num = 0
     for i,row in enumerate(soup.find_all("div", class_="dish-category-section")):  #主項目
         for j,datas in enumerate(row.find_all("li")):    #細項名稱
-            data2 = datas["data-object"]
+            data2 =  json.loads(datas["data-object"])
             itemName += data2["name"] + ","
             #print(data2["name"])
             image = datas.find("div", class_="photo")
@@ -120,9 +121,10 @@ def home():
     #return "base64.b64encode(responseMsg.encode('utf-8')).decode('utf-8')"
     responseMsg = webCrawlerRead()
     return responseMsg
-@app.route("/getinfo", methods = ["POST"])
+@app.route("/getinfo", methods=['POST'])
 def test():
     url = request.form.get("infoUrl")
+    #url = "https://www.foodpanda.com.tw/restaurant/f7sc/k-d-bistro-taipei#"
     responseinfo = webCrawlerInfo(url)
     return responseinfo
 
