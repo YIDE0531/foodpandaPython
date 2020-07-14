@@ -75,6 +75,21 @@ def webCrawlerInfo(url):
     itemImage = ""
     titleNum = "0,"
     itemPrice = ""
+    itemAddress = soup.find("p", class_="vendor-location").string
+    itemDate = soup.find("span", class_="schedule-times").string
+    itemComment = ""
+    
+    for i,row in enumerate(soup.find_all("div", class_="review-component hreview")):  #選擇主項目
+        datas[0] = row.find("span", class_="fn").string
+        datas[1] = row.find("abbr", class_="review-date dtreviewed").string
+        datas[2] = row.find("div", class_="description").string
+
+        if(datas[0]==None):
+            datas[0] = "noperson"
+
+        itemComment += datas[0] + ",,," + datas[1] + ",,," + datas[2] + ",,,"
+    itemComment = itemComment[:len(itemComment)-3]
+    #print(itemComment)
    
     num = 0
     for i,row in enumerate(soup.find_all("div", class_="dish-category-section")):  #主項目
@@ -103,5 +118,5 @@ def webCrawlerInfo(url):
     #print(titleNum)
     #print(itemImage)
 
-    responseMsg = '{ "title": "' + title + '","titleNum": "' + titleNum + '","itemName": "' + itemName + '","itemImage": "' + itemImage+ '","itemPrice": "' + itemPrice + '"}'
+    responseMsg = '{ "title": "' + title + '","titleNum": "' + titleNum + '","itemName": "' + itemName + '","itemImage": "' + itemImage+ '","itemPrice": "' + itemPrice +'","itemAddress": "' + itemAddress+'","itemDate": "' + itemDate+'","itemComment": "' + itemComment +'"}'
     return responseMsg
