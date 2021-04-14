@@ -1,3 +1,4 @@
+# coding=UTF-8
 import requests
 import bs4
 from flask import Flask, request
@@ -24,25 +25,26 @@ def webCrawlerRead():
     images = soup.find_all("div", class_="vendor-picture b-lazy")
     infoUrl = soup.find_all("a", class_="hreview-aggregate url")
 
+    result = []
+    titleName = []
+    shopImage = []
+    shopInfoUrl = []
 
-    titleName = ""
     for title in titles:
         if title.get_text() != None:
-            titleName += title.get_text()+",,,"
-    titleName = titleName[:len(titleName)-1]
+            titleName.append(title.get_text())
 
-    shopImage = ""
     for image in images:
-        shopImage += image["data-src"].split("|")[1]+","
-    shopImage = shopImage[:len(shopImage)-1]
+        shopImage.append(image["data-src"].split("|")[1])
 
-    shopInfoUrl = ""
     for url in infoUrl:
-        shopInfoUrl += url["href"] + ","
-    shopInfoUrl = shopInfoUrl[:len(shopInfoUrl)-1]
+        shopInfoUrl.append(url["href"])
 
-    responseMsg = '{ "title": "' + titleName + '","image": "' + shopImage + '","infoUrl": "' + shopInfoUrl + '"}'
-    return responseMsg
+    for i in range(0, len(titleName)):
+        input_dict = {'title':titleName[i], 'image':shopImage[i], 'infoUrl':shopInfoUrl[i]}
+        result.append(input_dict)
+
+    return json.dumps(result, ensure_ascii=False)
 
     # for i,row in enumerate(soup.find_all("span", class_="name fn")):
     #     for j,datas in enumerate(row.find_all("a", title = "檢視本項產品細節資料")):
