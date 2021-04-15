@@ -69,20 +69,24 @@ def webCrawlerInfo(url):
 
     infoUrl = soup.find_all("a", class_="hreview-aggregate url")
 
-    title = ""
+    title = []
     for i,row in enumerate(soup.find_all("div", class_="nav-holder")):  #選擇主項目
         for j,datas in enumerate(row.find_all("a")):
-            title += datas["title"] + ","
+            # title += datas["title"]
+            title.append(datas["title"])
             #print(datas["title"])
-    title = title[:len(title)-1]
     
-    itemName = ""
-    itemImage = ""
-    titleNum = "0,"
-    itemPrice = ""
+    responseMsg = []
+
+    titleNum = [0]
     itemAddress = soup.find("p", class_="vendor-location").string
     itemDate = soup.find("span", class_="schedule-times").string
-    itemComment = ""
+
+    #評論區 名稱，日期，評論內容
+    itemComment = []
+
+    #取得item名稱價錢與照片
+    itemResult = []
     
     for i,row in enumerate(soup.find_all("div", class_="review-component hreview")):  #選擇主項目
         datas[0] = row.find("span", class_="fn").string
@@ -92,39 +96,39 @@ def webCrawlerInfo(url):
         if(datas[0]==None):
             datas[0] = "noperson"
 
-        itemComment += datas[0] + ",,," + datas[1] + ",,," + datas[2] + ",,,"
-    itemComment = itemComment[:len(itemComment)-3]
+        input_dict = {'itemCommentUserName':datas[0], 'itemCommentDate':datas[1], 'itemCommentText':datas[2]}
+        itemComment.append(input_dict)
     #print(itemComment)
    
     num = 0
     for i,row in enumerate(soup.find_all("div", class_="dish-category-section")):  #主項目
         for j,datas in enumerate(row.find_all("li")):    #細項名稱
             data2 = json.loads(datas["data-object"])
-            itemName += data2["name"] + ","
+            itemName = data2["name"]
             #print(data2["name"])
             image = datas.find("div", class_="photo")
             if(image!=None):
-                itemImage += image["data-src"] + ","
+                itemImage = image["data-src"]
             else:
-                itemImage += "notfind" + ","
+                itemImage = "notfind"
 
             price = datas.find("span", class_="price p-price")
             clearPrice = price.get_text().replace(" ", "")
-            itemPrice += clearPrice.replace("\n", "") + ","
-            
+            itemPrice = clearPrice.replace("\n", "")
+
+            input_dict = {'itemName':itemName, 'itemImage':itemImage, 'itemPrice':itemPrice}
+            itemResult.append(input_dict)
             num+=1
-        titleNum += str(num) + ","
-    itemName = itemName[:len(itemName)-1]
-    itemImage = itemImage[:len(itemImage)-1]
-    titleNum = titleNum[:len(titleNum)-1]
-    itemPrice = itemPrice[:len(itemPrice)-1]
-    #print(itemPrice)
+        titleNum.append(num)
 
-    #print(titleNum)
-    #print(itemImage)
-
-    responseMsg = '{ "title": "' + title + '","titleNum": "' + titleNum + '","itemName": "' + itemName + '","itemImage": "' + itemImage+ '","itemPrice": "' + itemPrice +'","itemAddress": "' + itemAddress+'","itemDate": "' + itemDate+'","itemComment": "' + itemComment +'"}'
-    return responseMsg
+    resultDic = {'title':title}
+    resultDic['titleNum'] = titleNum
+    resultDic['itemResult'] = itemResult
+    resultDic['itemAddress'] = itemAddress
+    resultDic['itemDate'] = itemDate
+    resultDic['itemComment'] = itemComment
+    # responseMsg = '{ "title": "' + title + '","titleNum": "' + titleNum + '","itemResult": "' + aaa + '","itemAddress": "' + itemAddress+'","itemDate": "' + itemDate+'","itemComment": "' + bbb +'"}'
+    return json.dumps(resultDic, ensure_ascii=False)
 
 
 
@@ -141,7 +145,7 @@ def home():
 @app.route("/getInfo", methods=['POST'])
 def test():
     url = request.form.get("infoUrl")
-    #url = "https://www.foodpanda.com.tw/restaurant/f7sc/k-d-bistro-taipei#"
+    # url = "https://www.foodpanda.com.tw/restaurant/f7sc/k-d-bistro-taipei#"
     responseinfo = webCrawlerInfo(url)
     return responseinfo
 
