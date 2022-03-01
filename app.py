@@ -14,7 +14,16 @@ class Shop():
 
 def webCrawlerRead():
     url = "https://www.foodpanda.com.tw/city/taipei-city"  #測試網址 http://httpbin.org/post
-    r = requests.get(url)
+    header = {   #FoodPanda有防爬蟲
+            "User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:89.0) Gecko/20100101 Firefox/89.0",
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+            "Accept-Encoding": "gzip, deflate, br",
+            "Accept-Language": "zh-TW,zh;q=0.8,en-US;q=0.5,en;q=0.3",
+            "Cache-Control": "no-cache",
+            "Connection": "keep-alive",
+            }
+    session = requests.Session()
+    r = session.get(url, headers = header)
     content = r.text
     #print(content)
     soup = bs4.BeautifulSoup(content, "html.parser")
@@ -63,7 +72,16 @@ def webCrawlerRead():
     #         num+=1
 
 def webCrawlerInfo(url):
-    r = requests.get(url)
+    header = {   #FoodPanda有防爬蟲
+            "User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:89.0) Gecko/20100101 Firefox/89.0",
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+            "Accept-Encoding": "gzip, deflate, br",
+            "Accept-Language": "zh-TW,zh;q=0.8,en-US;q=0.5,en;q=0.3",
+            "Cache-Control": "no-cache",
+            "Connection": "keep-alive",
+            }
+    session = requests.Session()
+    r = session.get(url, headers = header)
     content = r.text
     soup = bs4.BeautifulSoup(content, "html.parser")
 
